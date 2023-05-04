@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Sure-Market</string>
+    <string name="app_name_login">My Application</string>
+    <string name="password">PW</string>
+    <string name="id">ID</string>
+    <string name="login_button">로그인</string>
+    <string name="signup_button">회원 가입</string>
+    <string name="id_text">아이디</string>
+    <string name="password_text">비밀번호</string>
+    <string name="phone_text">핸드폰 번호</string>
+    <string name="email_text">이메일 주소</string>
+    <string name="signup_complete">회원가입 완료</string>
+    <string name="bottom_navigation_main">홈</string>
+    <string name="bottom_navigation_chat">채팅</string>
+    <string name="bottom_navigation_setting">나의 설정</string>
+    <string name="top_main_title">메인 페이지</string>
+    <string name="top_chat_title">채팅</string>
+    <string name="top_setting_title">나의 설정</string>
+
+
+    post
+    <string name="post_title">제목</string>
+    <string name="post_content">게시글 작성</string>
+    <string name="post_price">￦ 가격 (선택사항)</string>
+    <string name="post_place">거래 희망 장소</string>
+
+    dialog
+    // 카테고리 선택
+    <string name="dialog_init">삽니다</string>
+    <string name="dialog_digital">디지털</string>
+    <string name="dialog_home_product">생활가전</string>
+    <string name="dialog_furniture">가구/인테리어</string>
+    <string name="dialog_life_kitchen">생활/주방</string>
+    <string name="dialog_child_clothes">유아의류</string>
+    <string name="dialog_child_books">유아도서</string>
+    <string name="dialog_female_clothes">여성의류</string>
+    <string name="dialog_female_stuff">여성잡화</string>
+    <string name="dialog_male_clothes">남성패션</string>
+    <string name="dialog_beauty">뷰티/미용</string>
+    <string name="dialog_sport">스포츠/레저</string>
+
+    // map
+    <string name="location_decision">선택 완료</string>
+    <string name="location_input">선택한 곳의 장소명을 입력해주세요</string>
+    <string name="location_placeholder">예) 강남역 1번 출구, 당근빌딩 앞</string>
+
+
+</resources>
