@@ -1,27 +1,39 @@
 package com.example.sure_market.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.sure_market.data.ResponseUserId
+import com.example.sure_market.data.ResponseUser
+import com.example.sure_market.data.SignupData
+import com.example.sure_market.data.UserData
 import com.example.sure_market.network.ApiRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.firstOrNull
 
 class LoginViewModel(private val apiRepository: ApiRepository): ViewModel() {
-    private val _viewRepository = MutableStateFlow<ResponseUserId?>(null)
-    val viewRepository: StateFlow<ResponseUserId?> = _viewRepository
+    private val _responseLogIn = mutableStateOf<ResponseUser?>(null)
+    val responseLogIn: State<ResponseUser?> = _responseLogIn
 
-    fun requestViewRepository(email: String, password: String) {
-        viewModelScope.launch {
-            apiRepository.getPostSignIn(email, password).catch { error ->
-                Log.d("deaYoung", "requestViewRepository error ${error.message}")
-            }.collect { value ->
-                _viewRepository.value = value
-            }
+    private val _responseSignUp = mutableStateOf<Boolean?>(false)
+    val responseSignUp: State<Boolean?> = _responseSignUp
+
+    suspend fun requestLogInRepository(user: UserData) {
+        kotlin.runCatching {
+            apiRepository.getPostLogIn(user).firstOrNull()
+        }.onSuccess {
+            _responseLogIn.value = it
+        }.onFailure {
+            Log.d("daeYoung", "LoginViewModel loginAPI: fail")
+        }
+    }
+
+    suspend fun requestSignUpRepository(user: SignupData) {
+        kotlin.runCatching {
+            apiRepository.getPostSignUp(user).firstOrNull()
+        }.onSuccess {
+            _responseSignUp.value = it
+        }.onFailure {
+            Log.d("daeYoung", "LoginViewModel SignUpAPI: fail")
         }
     }
 

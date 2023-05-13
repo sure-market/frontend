@@ -35,7 +35,7 @@ fun SureMarketTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 //        LightColorPalette
 //    }
 
-    val colors = if (!MaterialTheme.colors.isLight) {
+    val colors = if (MaterialTheme.colors.isLight) {
         LightColorPalette
     } else {
         DarkColorPalette

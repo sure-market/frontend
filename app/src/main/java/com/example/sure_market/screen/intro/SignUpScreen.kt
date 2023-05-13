@@ -18,21 +18,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.sure_market.R
 import com.example.sure_market.viewmodel.LoginViewModel
 
 @Composable
 fun SignUp(
     onBack: () -> Unit,
-    onFinish: (String, String, String, String) -> Unit
+    onSignUp: (String, String, String, () -> Unit) -> Unit
 ) {
     var name by rememberSaveable() {
         mutableStateOf("")
     }
     var password by rememberSaveable {
-        mutableStateOf("")
-    }
-    var phone by rememberSaveable {
         mutableStateOf("")
     }
     var email by rememberSaveable {
@@ -45,7 +43,7 @@ fun SignUp(
 
     val focusManager = LocalFocusManager.current
     val focusRequester =
-        remember { listOf(FocusRequester(), FocusRequester(), FocusRequester()) }
+        remember { listOf(FocusRequester(), FocusRequester()) }
 
     Column(
         modifier = Modifier
@@ -90,30 +88,12 @@ fun SignUp(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(id = R.string.phone_text),
-            modifier = Modifier.align(Alignment.Start),
-            fontSize = 20.sp
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester[1]),
-            value = phone,
-            onValueChange = { phone = it },
-            placeholder = { Text(text = stringResource(id = R.string.phone_text)) },
-            maxLines = 1,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            keyboardActions = KeyboardActions(onNext = { focusRequester[2].requestFocus() })
-            )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
             text = stringResource(id = R.string.email_text),
             modifier = Modifier.align(Alignment.Start),
             fontSize = 20.sp
         )
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().focusRequester (focusRequester[2]),
+            modifier = Modifier.fillMaxWidth().focusRequester (focusRequester[1]),
             value = email,
             onValueChange = { email = it },
             placeholder = { Text(text = stringResource(id = R.string.email_text)) },
@@ -123,7 +103,7 @@ fun SignUp(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { onFinish(name, password, phone, email) }) {
+        Button(onClick = { onSignUp(name, password, email) { onBack() } }) {
             Text(text = stringResource(id = R.string.signup_complete))
         }
     }

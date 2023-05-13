@@ -7,18 +7,12 @@ class UserSharedPreference(context: Context) {
     private val prefFilename = "userPref"
     private val prefs: SharedPreferences = context.getSharedPreferences(prefFilename, Context.MODE_PRIVATE)
 
-    fun getUserPref(userId: String, defaultValue: Long = 0L): Long = prefs.getInt(userId,
-        defaultValue.toInt()
-    ).toLong()
+    fun getUserPref(userId: String, defaultValue: String = ""): String? =
+        prefs.getString(userId, defaultValue)
 
 
-    fun setUserPrefs(responseData: ResponseUserId) {
-        prefs.edit().putLong("userId", responseData.userId).apply()
-    }
-
-    // api 통신전
-    fun setUserPrefs(userId: Long) {
-        prefs.edit().putLong("userId", userId).apply()
+    fun setUserPrefs(userToken: String) {
+        prefs.edit().putString("userToken", userToken).apply()
     }
 
     fun clearUser() {

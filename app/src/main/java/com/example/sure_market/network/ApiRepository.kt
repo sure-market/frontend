@@ -1,45 +1,44 @@
 package com.example.sure_market.network
 
 import android.util.Log
-import com.example.sure_market.data.ResponseUserId
+import com.example.sure_market.data.ResponseUser
+import com.example.sure_market.data.SignupData
 import com.example.sure_market.data.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.RequestBody
+import java.util.Calendar
 
 class ApiRepository {
     private val user = RetrofitImpl.getRetrofitService()
 
-    suspend fun getPostSignUp(userData: UserData): Flow<ResponseUserId> = flow {
-        try {
-            val response = user.postSignUp(user = userData)
+    suspend fun getPostSignUp(signupData: SignupData): Flow<Boolean> = flow {
+        kotlin.runCatching {
+            user.postSignUp(signupData)
+        }.onSuccess {response ->
             if (response.isSuccessful) {
-                response.body()?.let {
-                    emit(it)
-                }
-            } else {
-                throw Exception()
+                Log.d("daeYoung", "SignUpAPI Repository: ${response}")
+                response.body()?.let { emit(it) }
             }
-        } catch (e: Exception) {
-            Log.d("DaeYoung", "loginAPI fail")
+        }.onFailure {
+            Log.d("DaeYoung", "SignUpAPI fail: ${it.message}")
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getPostSignIn(email: String, password: String): Flow<ResponseUserId> = flow {
-        try {
-            val response = user.postSignIn(email, password)
+    suspend fun getPostLogIn(userdata: UserData): Flow<ResponseUser> = flow {
+
+        kotlin.runCatching {
+            user.postLogIn(userdata)
+        }.onSuccess {response ->
             if (response.isSuccessful) {
-                response.body()?.let {
-                    emit(it)
-                }
-            } else {
-                throw Exception()
+                Log.d("daeYoung", "loginAPI Repository: ${response}")
+                response.body()?.let { emit(it) }
             }
-        } catch (e: Exception) {
-            Log.d("DaeYoung", "loginAPI fail")
+        }.onFailure {
+            Log.d("daeYoung", "loginAPI fail: ${it.message}")
         }
     }.flowOn(Dispatchers.IO)
-
-
 }
+
