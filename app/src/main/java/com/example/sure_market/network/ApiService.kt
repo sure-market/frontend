@@ -7,14 +7,11 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
-    @POST("auth/users/signup")
-    suspend fun postSignUp(@Body user: UserData): Response<ResponseUserId>
+    @POST("/api/v1/auth/users/signup")
+    suspend fun postSignUp(@Body user: SignupData): Response<Boolean>
 
-    @POST("auth/users/signin")
-    suspend fun postSignIn(
-        @Query("email") email: String,
-        @Query("password") password: String
-    ): Response<ResponseUserId>
+    @POST("/api/v1/auth/users/login")
+    suspend fun postLogIn(@Body user: UserData): Response<ResponseUser>
 
     @Multipart
     @POST("/api/v1/articles")

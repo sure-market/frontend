@@ -61,7 +61,7 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun postComplete() {
-        val userId = prefs.getUserPref("userId")
+        val userId = 11L  // 임의 숫자
         val price = if (viewModel.price.value.isBlank()) {
             0
         } else {
@@ -78,11 +78,11 @@ class PostActivity : AppCompatActivity() {
 //            )
             val postData =
                 JSONObject(
-                    "{\"userId\":\"${userId}\"," +
+                    "{\"userId\":${userId}," +
                             "\"category\":\"${viewModel.category.value}\"," +
                             "\"title\":\"${viewModel.title.value}\"," +
-                            "\"contents\":\"${viewModel.content.value}\"," +
-                            "\"price\":\"${price}\","
+                            "\"content\":\"${viewModel.content.value}\"," +
+                            "\"price\":${price}}"
                 ).toString()
             val jsonObject = postData.toRequestBody()
 
