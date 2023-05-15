@@ -70,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
         if (name.isBlank() || password.isBlank() || email.isBlank()) {
             Toast.makeText(this, "빈 항목이 있습니다.", Toast.LENGTH_SHORT).show()
         } else {
-            val user = UserData(name = name, password = password)
             lifecycleScope.launch {
                 val response = async {
                     viewModel.requestSignUpRepository(SignupData(name, password, email))

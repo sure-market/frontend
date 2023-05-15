@@ -69,13 +69,14 @@ fun MainScreen(
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(id = viewModel.topIconState.value.topTitle)) },
-                contentColor = Color.White,
+//                contentColor = Color.White,
                 actions = {
                     viewModel.topIconState.value.topIcon?.let {
                         IconButton(onClick = { /*TODO*/ }) {
                             Icon(
                                 painter = painterResource(id = it),
-                                contentDescription = "search"
+                                contentDescription = "search",
+                                tint = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
                             )
                         }
                     }
@@ -146,8 +147,8 @@ fun BottomNavigation(navController: NavHostController) {
     )
 
     androidx.compose.material.BottomNavigation(
-        backgroundColor = colorResource(id = R.color.main_color),
-        contentColor = Color.White
+//        backgroundColor = colorResource(id = R.color.main_color),
+//        contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -162,8 +163,8 @@ fun BottomNavigation(navController: NavHostController) {
 
                 },
                 label = { Text(text = stringResource(id = item.bottomTitle), fontSize = 9.sp) },
-                selectedContentColor = MaterialTheme.colors.primary,
-                unselectedContentColor = Color.Gray,
+                selectedContentColor = MaterialTheme.colors.secondary,
+                unselectedContentColor = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
                 selected = item.screenRoute == currentRoute,
                 alwaysShowLabel = false,
                 onClick = {

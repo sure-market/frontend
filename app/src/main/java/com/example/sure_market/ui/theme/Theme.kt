@@ -7,15 +7,19 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = Black,
+    primaryVariant = Orange700,
+    onPrimary = White,
+    secondary = Orange500,
+    onSecondary = White
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = White,
+    primaryVariant = Orange700,
+    onPrimary = Black,
+    secondary = Orange500,
+    onSecondary = White
 
     /* Other default colors to override
     background = Color.White,
@@ -29,17 +33,17 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun SureMarketTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
-
-    val colors = if (MaterialTheme.colors.isLight) {
-        LightColorPalette
-    } else {
+    val colors = if (darkTheme) {
         DarkColorPalette
+    } else {
+        LightColorPalette
     }
+//
+//    val colors = if (MaterialTheme.colors.isLight) {
+//        LightColorPalette
+//    } else {
+//        DarkColorPalette
+//    }
 
     MaterialTheme(
         colors = colors,
