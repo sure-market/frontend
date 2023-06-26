@@ -7,10 +7,10 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
-    @POST("/api/v1/auth/users/signup")
+    @POST("/auth/users/signup")
     suspend fun postSignUp(@Body user: SignupData): Response<Boolean>
 
-    @POST("/api/v1/auth/users/login")
+    @POST("/auth/users/login")
     suspend fun postLogIn(@Body user: UserData): Response<ResponseUser>
 
     @Multipart

@@ -5,6 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.example.sure_market.data.UserSharedPreference
@@ -59,6 +67,7 @@ class MainActivity : ComponentActivity() {
 
             SureMarketTheme {
                 val navController = rememberNavController()
+
                 MainScreen(
                     viewModel = viewModel,
                     navController = navController,

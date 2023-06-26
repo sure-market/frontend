@@ -88,15 +88,15 @@ class LoginActivity : AppCompatActivity() {
         if (password.isBlank() || name.isBlank()) {
             Toast.makeText(this, "빈 항목이 있습니다.", Toast.LENGTH_SHORT).show()
         } else {
-
             lifecycleScope.launch {
                 val responseUser = async {
                     viewModel.requestLogInRepository(UserData(name = name, password = password))
+                    Log.d("daeYoung", "name: ${viewModel.responseLogIn.value}")
                     viewModel.responseLogIn.value
                 }.await()
                 Log.d("DaeYoung", "로그인 결과 responseUser: $responseUser")
                 responseUser?.let {
-                    prefs.setUserPrefs(userToken = it.token)
+                    prefs.setUserPrefs(userToken = it.accessToken)
                     moveMainScreen()
                 }
             }
