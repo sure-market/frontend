@@ -71,7 +71,6 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_arrow_back_ios_new_24),
                             contentDescription = "back arrow",
-                            tint = Color.White
                         )
                     }
                 },
@@ -79,7 +78,9 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
                     IconButton(onClick = { postComplete() }) {
                         Text(text = "완료", color = colorResource(id = R.color.orange))
                     }
-                }
+                },
+                backgroundColor = MaterialTheme.colors.secondary,
+                contentColor = contentColorFor(MaterialTheme.colors.secondary)
             )
         },
         scaffoldState = scaffoldState

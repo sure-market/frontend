@@ -1,14 +1,23 @@
 package com.example.sure_market.screen.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MailOutline
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -18,7 +27,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.sure_market.R
-import com.example.sure_market.screen.main.ChatScreen
 import com.example.sure_market.viewmodel.MainViewModel
 
 const val MAIN = "mainScreen"
@@ -27,14 +35,15 @@ const val SETTING = "settingScreen"
 
 sealed class BottomNavItem(
     val screenRoute: String,
-    val bottomIcon: Int,
+    var bottomIcon: ImageVector,
     val bottomTitle: Int,
     val topIcon: Int?,
     val topTitle: Int,
 ) {
     object PostListScreen : BottomNavItem(
         screenRoute = MAIN,
-        bottomIcon = R.drawable.baseline_home_24,
+//        bottomIcon = R.drawable.baseline_home_24,
+        bottomIcon = Icons.Default.Home,
         bottomTitle = R.string.bottom_navigation_main,
         topIcon = R.drawable.baseline_search_24,
         topTitle = R.string.top_main_title,
@@ -42,7 +51,7 @@ sealed class BottomNavItem(
 
     object ChatScreen : BottomNavItem(
         screenRoute = CHAT,
-        bottomIcon = R.drawable.baseline_person_24,
+        bottomIcon = Icons.Outlined.Email,
         bottomTitle = R.string.bottom_navigation_chat,
         topIcon = null,
         topTitle = R.string.top_chat_title,
@@ -50,7 +59,7 @@ sealed class BottomNavItem(
 
     object SettingScreen : BottomNavItem(
         screenRoute = SETTING,
-        bottomIcon = R.drawable.baseline_chat_24,
+        bottomIcon = Icons.Outlined.Person,
         bottomTitle = R.string.bottom_navigation_setting,
         topIcon = R.drawable.baseline_settings_24,
         topTitle = R.string.top_setting_title,
@@ -76,11 +85,13 @@ fun MainScreen(
                             Icon(
                                 painter = painterResource(id = it),
                                 contentDescription = "search",
-                                tint = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
+//                                tint = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
                             )
                         }
                     }
-                }
+                },
+                backgroundColor = MaterialTheme.colors.secondary,
+                contentColor = contentColorFor(MaterialTheme.colors.secondary)
             )
         },
         floatingActionButton = {
@@ -93,11 +104,12 @@ fun MainScreen(
                     )
                 },
                 onClick = { onMovePost() },
-                contentColor = Color.White,
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = contentColorFor(MaterialTheme.colors.primary)
             )
         },
         bottomBar = {
-            BottomNavigation(navController = navController)
+            BottomNavigation(navController = navController, viewModel = viewModel)
         }
 
     ) {
@@ -139,7 +151,7 @@ fun NavigationGraph(
 }
 
 @Composable
-fun BottomNavigation(navController: NavHostController) {
+fun BottomNavigation(navController: NavHostController, viewModel: MainViewModel) {
     val items = listOf<BottomNavItem>(
         BottomNavItem.PostListScreen,
         BottomNavItem.ChatScreen,
@@ -147,8 +159,8 @@ fun BottomNavigation(navController: NavHostController) {
     )
 
     androidx.compose.material.BottomNavigation(
-//        backgroundColor = colorResource(id = R.color.main_color),
-//        contentColor = Color.White
+        backgroundColor = MaterialTheme.colors.secondary,
+        contentColor = contentColorFor(MaterialTheme.colors.secondary)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -156,15 +168,14 @@ fun BottomNavigation(navController: NavHostController) {
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        painter = painterResource(id = item.bottomIcon),
+                        imageVector = item.bottomIcon,
                         contentDescription = stringResource(id = item.bottomTitle),
                         modifier = Modifier.size(26.dp)
                     )
-
                 },
                 label = { Text(text = stringResource(id = item.bottomTitle), fontSize = 9.sp) },
-                selectedContentColor = MaterialTheme.colors.secondary,
-                unselectedContentColor = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
+//                selectedContentColor = MaterialTheme.colors.secondary,
+//                unselectedContentColor = MaterialTheme.colors.secondary,
                 selected = item.screenRoute == currentRoute,
                 alwaysShowLabel = false,
                 onClick = {
@@ -175,6 +186,39 @@ fun BottomNavigation(navController: NavHostController) {
                         launchSingleTop = true
                         restoreState = true
                     }
+
+//                    bottomSheetIconStateList.forEach {
+//                        Log.d("daeYoung", "bottomSheetIconStateList: ${it}")
+//                    }
+                    when (item.screenRoute) {
+                        MAIN -> {
+                            viewModel.bottomIconChange(p1 = true)
+
+                            if (viewModel.bottomIconState.value[0]) {
+                                items[1].bottomIcon = Icons.Outlined.Email
+                                items[2].bottomIcon = Icons.Outlined.Person
+                                item.bottomIcon = Icons.Default.Home
+                            }
+                        }
+                        CHAT -> {
+                            viewModel.bottomIconChange(p2 = true)
+
+                             if (viewModel.bottomIconState.value[1]) {
+                                items[0].bottomIcon = Icons.Outlined.Home
+                                items[2].bottomIcon = Icons.Outlined.Person
+                                item.bottomIcon = Icons.Default.Email
+                            }
+                        }
+                        SETTING -> {
+                            viewModel.bottomIconChange(p3 = true)
+                            if (viewModel.bottomIconState.value[2]) {
+                                items[0].bottomIcon = Icons.Outlined.Home
+                                items[1].bottomIcon = Icons.Outlined.Email
+                                item.bottomIcon = Icons.Default.Person
+                            }
+                        }
+                    }
+
                 }
             )
         }
