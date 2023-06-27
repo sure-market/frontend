@@ -3,7 +3,7 @@ package com.example.sure_market.data
 import com.google.gson.annotations.SerializedName
 
 data class ResponseListData(
-    @SerializedName("post_id")
+    @SerializedName("postId")
     val postId: Long,
 
     @SerializedName("title")
@@ -20,5 +20,8 @@ data class ResponseListData(
 
     @SerializedName("status")
     val status: String,
+
+    @SerializedName("userId")
+    val userId: String,
 
 )

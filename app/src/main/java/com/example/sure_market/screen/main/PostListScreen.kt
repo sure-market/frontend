@@ -22,7 +22,7 @@ fun PostListScreen(viewModel: MainViewModel, onMoveDetail: (Long) -> Unit) {
 
     LaunchedEffect(Unit) {
         Log.d("daeYoung", "계속 작동하는지 확인")
-        viewModel.requestViewRepository("category")
+        viewModel.requestViewRepository()
     }
 
     GridList(viewModel = viewModel, onMoveDetail = onMoveDetail)

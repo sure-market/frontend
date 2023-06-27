@@ -32,10 +32,10 @@ class PostRepository {
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getLoadListData(query: String): Flow<List<ResponseListData>> = flow {
+    suspend fun getLoadListData(): Flow<List<ResponseListData>> = flow {
 
         kotlin.runCatching {
-            user.loadListData(category = query)
+            user.loadListData()
         }.onSuccess {response ->
             if (response.isSuccessful) {
                 response.body()?.let { emit(it) }

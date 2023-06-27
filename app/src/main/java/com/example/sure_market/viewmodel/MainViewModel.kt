@@ -33,16 +33,16 @@ class MainViewModel(private val repository: PostRepository = PostRepository()): 
         _bottomIconState.value[2] = p3
     }
 
-    val query = MutableStateFlow("")
-    val postList = query.flatMapLatest {
-        repository.getLoadListData(it)
-    }.catch {
-        Log.d("FUCK YOU", it.toString())
-    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+//    val query = MutableStateFlow("")
+//    val postList = query.flatMapLatest {
+//        repository.getLoadListData(it)
+//    }.catch {
+//        Log.d("FUCK YOU", it.toString())
+//    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun requestViewRepository(query: String) {
+    fun requestViewRepository() {
         viewModelScope.launch {
-            repository.getLoadListData(query).catch { error ->
+            repository.getLoadListData().catch { error ->
                 Log.d("deaYoung", "requestViewRepository error ${error.message}")
             }.collect {value ->
                 value.filterNot {

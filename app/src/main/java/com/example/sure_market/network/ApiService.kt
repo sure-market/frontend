@@ -8,10 +8,10 @@ import retrofit2.http.*
 
 interface ApiService {
     @POST("/auth/users/signup")
-    suspend fun postSignUp(@Body user: SignupData): Response<Boolean>
+    suspend fun postSignUp(@Body user: SignupData): Boolean
 
     @POST("/auth/users/login")
-    suspend fun postLogIn(@Body user: UserData): Response<ResponseUser>
+    suspend fun postLogIn(@Body user: UserData): ResponseUser
 
     @Multipart
     @POST("/api/v1/articles")
@@ -21,7 +21,7 @@ interface ApiService {
     ):Response<ResponsePostId>
 
     @GET("/api/v1/articles/")
-    suspend fun loadListData(@Query("category")category: String):Response<List<ResponseListData>>
+    suspend fun loadListData():Response<List<ResponseListData>>
 
     @GET("/api/v1/articles/{PostId}")
     suspend fun loadDetailData(@Path("PostId") postId: Int):Response<ResponseDetailPostData>

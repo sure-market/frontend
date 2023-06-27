@@ -1,6 +1,7 @@
 package com.example.sure_market.network
 
 import android.util.Log
+import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseUser
 import com.example.sure_market.data.SignupData
 import com.example.sure_market.data.UserData
@@ -14,31 +15,24 @@ import java.util.Calendar
 class ApiRepository {
     private val user = RetrofitImpl.getRetrofitService()
 
-    suspend fun getPostSignUp(signupData: SignupData): Flow<Boolean> = flow {
+    suspend fun getPostSignUp(signupData: SignupData): Flow<ApiState> = flow {
         kotlin.runCatching {
             user.postSignUp(signupData)
-        }.onSuccess {response ->
-            if (response.isSuccessful) {
-                Log.d("daeYoung", "SignUpAPI Repository: ${response}")
-                response.body()?.let { emit(it) }
-            }
-        }.onFailure {
-            Log.d("DaeYoung", "SignUpAPI fail: ${it.message}")
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure { error ->
+            error.message?.let { emit(ApiState.Error(it)) }
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getPostLogIn(userdata: UserData): Flow<ResponseUser> = flow {
+    suspend fun getPostLogIn(userdata: UserData): Flow<ApiState> = flow {
 
         kotlin.runCatching {
             user.postLogIn(userdata)
-        }.onSuccess {response ->
-            if (response.isSuccessful) {
-                Log.d("daeYoung", "loginAPI Repository: ${response}")
-                response.body()?.let { emit(it) }
-            }
-        }.onFailure {
-            Log.d("daeYoung", "loginAPI fail: ${it.message}")
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure { error ->
+            error.message?.let { emit(ApiState.Error(it)) }
         }
     }.flowOn(Dispatchers.IO)
 }
-

@@ -91,7 +91,6 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val responseUser = async {
                     viewModel.requestLogInRepository(UserData(name = name, password = password))
-                    Log.d("daeYoung", "name: ${viewModel.responseLogIn.value}")
                     viewModel.responseLogIn.value
                 }.await()
                 Log.d("DaeYoung", "로그인 결과 responseUser: $responseUser")
