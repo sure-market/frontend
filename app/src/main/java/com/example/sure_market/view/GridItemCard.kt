@@ -21,13 +21,13 @@ import com.example.sure_market.data.ResponseListData
 
 
 @Composable
-fun GridItemCard(responseListData: ResponseListData, onMoveDetail: (Long) -> Unit) {
+fun GridItemCard(responseListData: ResponseListData, onMoveDetail: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
             .padding(10.dp)
-            .clickable { onMoveDetail(responseListData.postId) },
+            .clickable { onMoveDetail(responseListData.postId.toInt()) },
         shape = RoundedCornerShape(20.dp),
         elevation = 10.dp
     ) {

@@ -2,10 +2,8 @@ package com.example.sure_market.network
 
 import android.media.Image
 import android.util.Log
-import com.example.sure_market.data.PostRegisterData
-import com.example.sure_market.data.ResponseDetailPostData
-import com.example.sure_market.data.ResponseListData
-import com.example.sure_market.data.ResponsePostId
+import com.example.sure_market.data.*
+import com.google.android.gms.common.api.Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -32,28 +30,25 @@ class PostRepository {
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getLoadListData(): Flow<List<ResponseListData>> = flow {
+    suspend fun getLoadListData(accessToken: String): Flow<ApiState> = flow {
 
         kotlin.runCatching {
+//            user.loadListData(Authorization = accessToken)
             user.loadListData()
-        }.onSuccess {response ->
-            if (response.isSuccessful) {
-                response.body()?.let { emit(it) }
-            }
-        }.onFailure {
-            Log.d("DaeYoung", "getLoadListDataAPI fail")
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure {error ->
+            error.message?.let { emit(ApiState.Error(it)) }
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getLoadDetailData(postId: Int): Flow<ResponseDetailPostData> = flow<ResponseDetailPostData> {
+    suspend fun getLoadDetailData(postId: Int): Flow<ApiState> = flow {
         kotlin.runCatching {
             user.loadDetailData(postId = postId)
-        }.onSuccess {response ->
-            if (response.isSuccessful) {
-                response.body()?.let { emit(it) }
-            }
-        }.onFailure {
-            Log.d("DaeYoung", "getLoadDetailDataAPI fail")
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure { error ->
+            error.message?.let { emit(ApiState.Error(it)) }
         }
     }.flowOn(Dispatchers.IO)
 

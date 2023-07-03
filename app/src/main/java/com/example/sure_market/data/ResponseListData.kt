@@ -13,13 +13,10 @@ data class ResponseListData(
     val price: Long,
 
     @SerializedName("image")
-    val image: String,
+    val image: List<String>,
 
     @SerializedName("region")
     val region: String,
-
-    @SerializedName("status")
-    val status: String,
 
     @SerializedName("userId")
     val userId: String,

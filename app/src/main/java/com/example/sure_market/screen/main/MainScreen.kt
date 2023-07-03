@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,7 @@ fun MainScreen(
     viewModel: MainViewModel,
     navController: NavHostController,
     onMovePost: () -> Unit,
-    onMoveDetail: (Long) -> Unit,
+    onMoveDetail: (Int) -> Unit,
     clearUser: () -> Unit
 ) {
     Scaffold(
@@ -128,7 +129,7 @@ fun MainScreen(
 fun NavigationGraph(
     navController: NavHostController,
     viewModel: MainViewModel,
-    onMoveDetail: (Long) -> Unit,
+    onMoveDetail: (Int) -> Unit,
     clearUser: () -> Unit
 ) {
     NavHost(
@@ -137,7 +138,7 @@ fun NavigationGraph(
     ) {
         composable(BottomNavItem.PostListScreen.screenRoute) {
             viewModel.setTopIconState(BottomNavItem.PostListScreen)
-            PostListScreen(viewModel = viewModel, onMoveDetail = onMoveDetail)
+            PostListScreen(viewModel = viewModel, onMoveDetail = onMoveDetail, context = LocalContext.current)
         }
         composable(BottomNavItem.ChatScreen.screenRoute) {
             viewModel.setTopIconState(BottomNavItem.ChatScreen)

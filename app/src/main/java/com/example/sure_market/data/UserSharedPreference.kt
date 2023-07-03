@@ -7,8 +7,8 @@ class UserSharedPreference(context: Context) {
     private val prefFilename = "userPref"
     private val prefs: SharedPreferences = context.getSharedPreferences(prefFilename, Context.MODE_PRIVATE)
 
-    fun getUserPref(userId: String, defaultValue: String = ""): String? =
-        prefs.getString(userId, defaultValue)
+    fun getUserPref(userToken: String, defaultValue: String = ""): String? =
+        prefs.getString(userToken, defaultValue)
 
 
     fun setUserPrefs(userToken: String) {

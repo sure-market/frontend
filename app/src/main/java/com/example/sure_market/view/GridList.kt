@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.sure_market.viewmodel.MainViewModel
 
 @Composable
-fun GridList(viewModel: MainViewModel, onMoveDetail: (Long) -> Unit) {
+fun GridList(viewModel: MainViewModel, onMoveDetail: (Int) -> Unit) {
     val scrollState = rememberLazyGridState()
     LazyVerticalGrid(
         state = scrollState,

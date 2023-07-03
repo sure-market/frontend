@@ -18,12 +18,15 @@ interface ApiService {
     suspend fun postRegister(
         @Part files: List<MultipartBody.Part>,
         @Part postDto: RequestBody,
-    ):Response<ResponsePostId>
+    ): Response<ResponsePostId>
+
+//    @GET("/api/v1/articles/")
+//    suspend fun loadListData(@Header("Authorization") Authorization: String): List<ResponseListData>
 
     @GET("/api/v1/articles/")
-    suspend fun loadListData():Response<List<ResponseListData>>
+    suspend fun loadListData(): List<ResponseListData>
 
-    @GET("/api/v1/articles/{PostId}")
-    suspend fun loadDetailData(@Path("PostId") postId: Int):Response<ResponseDetailPostData>
+    @GET("/api/v1/articles/{postId}")
+    suspend fun loadDetailData(@Path("postId") postId: Int): ResponseListData
 }
 

@@ -19,6 +19,7 @@ import com.example.sure_market.R
 import com.example.sure_market.view.DetailItemContent
 import com.example.sure_market.view.DetailItemProfile
 import com.example.sure_market.view.PostCardView
+import com.example.sure_market.viewmodel.DetailViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -26,14 +27,14 @@ import com.google.accompanist.pager.rememberPagerState
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun DetailItemScreen() {
+fun DetailItemScreen(viewModel: DetailViewModel) {
     val scrollState = rememberScrollState()
     var isFavorite by remember { mutableStateOf(false) }
     val pagerState = rememberPagerState()
     val testImageList = remember { emptyList<String>().toMutableList() }
     for (i in 1..10) {
         testImageList.add("https://picsum.photos/400/360")
-        Log.d("daeYoung", "pagerImage $i")
+//        Log.d("daeYoung", "pagerImage $i")
     }
 
 //    val interactionSource = remember { MutableInteractionSource() }
@@ -47,7 +48,8 @@ fun DetailItemScreen() {
         BottomAppBar(
             modifier = Modifier
                 .fillMaxWidth(),
-            contentColor = Color.White,
+            contentColor = contentColorFor(MaterialTheme.colors.secondary),
+            backgroundColor = MaterialTheme.colors.secondary,
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Icon(
@@ -58,7 +60,7 @@ fun DetailItemScreen() {
                 },
                 contentDescription = "favorite",
                 tint = if (isFavorite) {
-                    Color.White
+                    contentColorFor(MaterialTheme.colors.secondary)
                 } else {
                     colorResource(id = R.color.orange)
                 },
@@ -80,11 +82,15 @@ fun DetailItemScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "430,000원", fontWeight = FontWeight.Bold, color = Color.White)
+                Text(
+                    text = "430,000원",
+                    fontWeight = FontWeight.Bold,
+                    color = contentColorFor(MaterialTheme.colors.secondary)
+                )
 
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colorResource(id = R.color.orange),
+                        backgroundColor = MaterialTheme.colors.primary,
                         contentColor = Color.White
                     ),
                     modifier = Modifier.padding(8.dp),
@@ -109,7 +115,9 @@ fun DetailItemScreen() {
                     PostCardView(image = testImageList[pagerIndex], pagerState = pagerState)
                 }
                 HorizontalPagerIndicator(
-                    modifier = Modifier.padding(bottom = 16.dp).align(Alignment.BottomCenter),
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .align(Alignment.BottomCenter),
                     pagerState = pagerState,
                 )
             }
@@ -131,5 +139,5 @@ fun DetailItemScreen() {
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    DetailItemScreen()
+//    DetailItemScreen(viewModel = DetailViewModel)
 }

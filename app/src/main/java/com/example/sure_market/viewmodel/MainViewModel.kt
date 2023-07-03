@@ -1,19 +1,15 @@
 package com.example.sure_market.viewmodel
 
-import android.app.DownloadManager.Query
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sure_market.data.PostRegisterData
+import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseListData
 import com.example.sure_market.network.PostRepository
 import com.example.sure_market.screen.main.BottomNavItem
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: PostRepository = PostRepository()): ViewModel() {
@@ -40,15 +36,23 @@ class MainViewModel(private val repository: PostRepository = PostRepository()): 
 //        Log.d("FUCK YOU", it.toString())
 //    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun requestViewRepository() {
+    fun requestViewRepository(accessToken: String) {
         viewModelScope.launch {
-            repository.getLoadListData().catch { error ->
-                Log.d("deaYoung", "requestViewRepository error ${error.message}")
-            }.collect {value ->
-                value.filterNot {
-                    it in _viewRepository
-                }.forEach {
-                    _viewRepository.add(it)
+            repository.getLoadListData(accessToken = "Bearer $accessToken").collect {
+                when(it) {
+                    is ApiState.Success<*> -> {
+                        val list = it.value as List<ResponseListData>
+                        Log.d("daeYoung", "리스트: ${list}")
+                        list.filterNot {
+                            it in _viewRepository
+                        }.forEach {
+                            _viewRepository.add(it)
+                        }
+                    }
+                    is ApiState.Error -> {
+                        Log.d("daeYoung", "callPostList Error: ${it.errMsg}")
+                    }
+                    is ApiState.Loading -> TODO()
                 }
             }
         }
