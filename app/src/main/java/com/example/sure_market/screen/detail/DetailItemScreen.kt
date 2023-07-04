@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sure_market.R
+import com.example.sure_market.supports.noRippleClickable
 import com.example.sure_market.view.DetailItemContent
 import com.example.sure_market.view.DetailItemProfile
 import com.example.sure_market.view.PostCardView
@@ -69,7 +70,9 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
                 } else {
                     Color.Black
                 },
-                modifier = Modifier.clickable { isFavorite = !isFavorite }
+                modifier = Modifier.noRippleClickable {
+                    isFavorite = !isFavorite
+                }
             )
 
             Spacer(modifier = Modifier.width(16.dp))
