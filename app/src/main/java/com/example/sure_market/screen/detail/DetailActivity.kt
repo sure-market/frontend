@@ -12,7 +12,6 @@ import com.example.sure_market.viewmodel.DetailViewModel
 import com.example.sure_market.viewmodel.MainViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
-    @SuppressLint("StateFlowValueCalledInComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         val viewModelFactory: MainViewModelFactory by lazy {
             MainViewModelFactory(PostRepository())
@@ -20,17 +19,13 @@ class DetailActivity : AppCompatActivity() {
         val viewModel: DetailViewModel by lazy {
             ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]
         }
-        var postId: Int
+        val postId: Int by lazy { intent.getIntExtra("postId", 0) }
 
         super.onCreate(savedInstanceState)
         setContent {
-            postId = intent.getIntExtra("postId", 0)
-//            LaunchedEffect(Unit) {
-//            }
             viewModel.requestViewRepository(postId)
             SureMarketTheme {
-                // responseDetailPostData?.let { DetailItemScreen() } // API 통신 에러
-                DetailItemScreen(viewModel = viewModel)
+                viewModel.viewRepository.value?.let { DetailItemScreen(viewModel = viewModel) } // API 통신 에러
             }
         }
 

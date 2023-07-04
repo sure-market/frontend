@@ -6,8 +6,10 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
+import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponsePostId
 import com.example.sure_market.network.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,52 +50,39 @@ class PostViewModel(application: Application, private val postRepository: PostRe
 //    val region: State<String> = _region
 
     suspend fun requestViewRepository(post: RequestBody) {
-
-
-        val RequestBodyList = emptyList<MultipartBody.Part>().toMutableList()
+        val requestBodyList = emptyList<MultipartBody.Part>().toMutableList()
         _uriList.forEach {
-//            val imagePath = File(absolutelyPath(it, getApplication<Application>().applicationContext))
-//            val multipartBody = MultipartBody.Part.createFormData(
-//                "file",
-//                imagePath.name,
-//                imagePath.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//            )
             val multipartBody = MultipartBody.Part.createFormData(
-                "file",
+                "files",
                 "file name",
                 it.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
             )
-            RequestBodyList.add(multipartBody)
+            requestBodyList.add(multipartBody)
         }
-        val multipartBodyList = RequestBodyList.toList()
+        val multipartBodyList = requestBodyList.toList()
 
-//        val gsonPostData =
-//            post.toString().toRequestBody("application/json".toMediaTypeOrNull())
-//        Log.d("daeYoung", "gsonPostData: ${gsonPostData.contentType()}")
-        // success: get / failure: null
-        kotlin.runCatching {
-            postRepository.getPostRegister(files = multipartBodyList, postDto = post)
-                .firstOrNull()
-        }.onSuccess { responsePostId ->
-            _viewRepository.value = responsePostId ?: ResponsePostId(100)
-            Log.d("daeYoung", "responsePostId: ${_viewRepository.value}")
-            Log.d("daeYoung", "responsePostId: ${responsePostId}")
-        }.onFailure {
-            Log.d("daeYoung", "PostRegisterFail: fail")
+//        kotlin.runCatching {
+//            postRepository.getPostRegister(files = multipartBodyList, postDto = post)
+//                .firstOrNull()
+//        }.onSuccess { responsePostId ->
+////            _viewRepository.value = responsePostId ?: ResponsePostId(100)
+//            Log.d("daeYoung", "responsePostId: ${_viewRepository.value}")
+//            Log.d("daeYoung", "responsePostId: ${responsePostId}")
+//        }.onFailure {
+//            Log.d("daeYoung", "PostRegisterFail: fail")
+//        }
+        when(val response = postRepository.getPostRegister(files = multipartBodyList, postDto = post).firstOrNull()) {
+            is ApiState.Success<*> -> {
+                Log.d("daeYoung", "responsePostId: ${response.value}")
+                _viewRepository.value = response.value as ResponsePostId
+            }
+            ApiState.Loading -> TODO()
+            is ApiState.Error -> {
+                Log.d("daeYoung", "PostRegisterFail: fail: ${response.errMsg}")
+            }
+            null -> TODO()
         }
     }
-
-    // 절대경로 변환
-//    fun absolutelyPath(path: Uri, context : Context): String {
-//        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-//        var c: Cursor? = context.contentResolver.query(path, proj, null, null, null)
-//        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-//        c?.moveToFirst()
-//
-//        var result = c?.getString(index!!)
-//
-//        return result!!
-//    }
 
 
     fun setTitle(title: String) {

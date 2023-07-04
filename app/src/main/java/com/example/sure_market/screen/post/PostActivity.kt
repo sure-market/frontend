@@ -18,6 +18,7 @@ import com.example.sure_market.viewmodel.PostViewModel
 import com.example.sure_market.viewmodel.PostViewModelFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
@@ -84,7 +85,7 @@ class PostActivity : AppCompatActivity() {
                             "\"content\":\"${viewModel.content.value}\"," +
                             "\"price\":${price}}"
                 ).toString()
-            val jsonObject = postData.toRequestBody()
+            val jsonObject = postData.toRequestBody("application/json".toMediaType())
 
             lifecycleScope.launch {
 //                val postId = async { viewModel.requestViewRepository(jsonObject) }.await()

@@ -14,11 +14,11 @@ interface ApiService {
     suspend fun postLogIn(@Body user: UserData): ResponseUser
 
     @Multipart
-    @POST("/api/v1/articles")
+    @POST("/api/v1/articles/")
     suspend fun postRegister(
         @Part files: List<MultipartBody.Part>,
-        @Part postDto: RequestBody,
-    ): Response<ResponsePostId>
+        @Part("postDto") postDto: RequestBody,
+    ): ResponsePostId
 
 //    @GET("/api/v1/articles/")
 //    suspend fun loadListData(@Header("Authorization") Authorization: String): List<ResponseListData>
@@ -27,6 +27,6 @@ interface ApiService {
     suspend fun loadListData(): List<ResponseListData>
 
     @GET("/api/v1/articles/{postId}")
-    suspend fun loadDetailData(@Path("postId") postId: Int): ResponseListData
+    suspend fun loadDetailData(@Path("postId") postId: Long): ResponseListData
 }
 

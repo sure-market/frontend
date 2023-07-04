@@ -17,23 +17,20 @@ import retrofit2.Response
 class PostRepository {
     private val user = RetrofitImpl.getRetrofitService()
 
-    suspend fun getPostRegister(files: List<MultipartBody.Part>, postDto: RequestBody): Flow<ResponsePostId> = flow {
+    suspend fun getPostRegister(files: List<MultipartBody.Part>, postDto: RequestBody): Flow<ApiState> = flow {
 
         kotlin.runCatching {
             user.postRegister(files = files, postDto = postDto)
-        }.onSuccess {response ->
-            if (response.isSuccessful) {
-                response.body()?.let { emit(it) }
-            }
-        }.onFailure {
-            Log.d("DaeYoung", "getPostRegisterAPI fail")
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure { error ->
+            error.message?.let { emit(ApiState.Error(it)) }
         }
     }.flowOn(Dispatchers.IO)
 
     suspend fun getLoadListData(accessToken: String): Flow<ApiState> = flow {
 
         kotlin.runCatching {
-//            user.loadListData(Authorization = accessToken)
             user.loadListData()
         }.onSuccess {
             emit(ApiState.Success(it))
@@ -42,7 +39,7 @@ class PostRepository {
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getLoadDetailData(postId: Int): Flow<ApiState> = flow {
+    suspend fun getLoadDetailData(postId: Long): Flow<ApiState> = flow {
         kotlin.runCatching {
             user.loadDetailData(postId = postId)
         }.onSuccess {

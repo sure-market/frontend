@@ -1,11 +1,10 @@
 package com.example.sure_market.view
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +24,7 @@ fun CategoryDialog(onClick: () -> Unit, viewModel: PostViewModel) {
             modifier = Modifier
                 .width(200.dp)
                 .wrapContentHeight(),
+            shape = MaterialTheme.shapes.medium,
             color = Color.White
         ) {
             DialogContent(onClick, viewModel = viewModel)
@@ -34,7 +34,6 @@ fun CategoryDialog(onClick: () -> Unit, viewModel: PostViewModel) {
 
 @Composable
 fun DialogContent(onClick: () -> Unit, viewModel: PostViewModel) {
-    val context = LocalContext.current
     val list = listOf(
         stringResource(id = R.string.dialog_digital),
         stringResource(id = R.string.dialog_home_product),
@@ -48,7 +47,7 @@ fun DialogContent(onClick: () -> Unit, viewModel: PostViewModel) {
         stringResource(id = R.string.dialog_beauty),
         stringResource(id = R.string.dialog_sport),
     )
-    LazyColumn() {
+    LazyColumn(modifier = Modifier.padding(8.dp)) {
         items(list) { item ->
             Button(modifier = Modifier.fillMaxWidth(), onClick = {
                 viewModel.setCategory(item)

@@ -12,12 +12,12 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 object RetrofitImpl {
-    private const val URL = "http://192.168.0.17:8080"
+    private const val URL = "http:/192.168.0.17:8080"
 
     private fun client(interceptor: AppInterceptor): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(interceptor)
         .addInterceptor(HttpLoggingInterceptor().apply {
-            setLevel(HttpLoggingInterceptor.Level.BASIC)
+            setLevel(HttpLoggingInterceptor.Level.BODY)
         })
 //        .connectTimeout(100, TimeUnit.SECONDS)
         .connectTimeout( 100, TimeUnit.SECONDS )

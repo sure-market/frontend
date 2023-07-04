@@ -107,7 +107,13 @@ fun MapDialogContent(
                     text = stringResource(id = R.string.location_placeholder),
                     color = Color.Gray
                 )
-            })
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                cursorColor = MaterialTheme.colors.primary,
+                focusedIndicatorColor = Color.White,
+                unfocusedIndicatorColor = Color.White
+            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

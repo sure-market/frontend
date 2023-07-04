@@ -26,10 +26,9 @@ class LoginViewModel(private val apiRepository: ApiRepository) : ViewModel() {
         when (val apiState = apiRepository.getPostLogIn(user).first()) {
             is ApiState.Success<*> -> {
                 _responseLogIn.value = apiState.value as ResponseUser
-                Log.d("daeYoung", "성공: ${_responseLogIn.value}")
             }
             is ApiState.Error -> {
-                Log.d("daeYoung", "실패: ${apiState.errMsg}")
+                Log.d("daeYoung", "로그인 실패: ${apiState.errMsg}")
             }
             is ApiState.Loading -> {}
         }
@@ -39,7 +38,6 @@ class LoginViewModel(private val apiRepository: ApiRepository) : ViewModel() {
         when (val apiState = apiRepository.getPostSignUp(user).first()) {
             is ApiState.Success<*> -> {
                 _responseSignUp.value = apiState.value as Boolean
-                Log.d("daeYoung", "성공: ${_responseSignUp.value}")
             }
             is ApiState.Error -> {
                 Log.d("daeYoung", "실패: ${apiState.errMsg}")

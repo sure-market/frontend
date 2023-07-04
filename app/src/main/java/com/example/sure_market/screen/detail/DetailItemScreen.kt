@@ -1,5 +1,6 @@
 package com.example.sure_market.screen.detail
 
+import android.icu.text.DecimalFormat
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -7,11 +8,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,12 +41,13 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
 //        Log.d("daeYoung", "pagerImage $i")
     }
 
+
 //    val interactionSource = remember { MutableInteractionSource() }
 //    val ripple = rememberRipple(color = Color.Blue)
 
     LaunchedEffect(Unit) {
 //        testImageList.clear()
-
+        Log.d("daeYoung", "데이터 잘 들어있는 확인: ${viewModel.viewRepository.value}")
     }
     Scaffold(bottomBar = {
         BottomAppBar(
@@ -54,15 +59,15 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
         ) {
             Icon(
                 imageVector = if (isFavorite) {
-                    Icons.Default.FavoriteBorder
-                } else {
                     Icons.Default.Favorite
+                } else {
+                    Icons.Outlined.FavoriteBorder
                 },
                 contentDescription = "favorite",
                 tint = if (isFavorite) {
-                    contentColorFor(MaterialTheme.colors.secondary)
-                } else {
                     colorResource(id = R.color.orange)
+                } else {
+                    Color.Black
                 },
                 modifier = Modifier.clickable { isFavorite = !isFavorite }
             )
@@ -83,10 +88,11 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "430,000원",
+                    text = "${viewModel.getPrice()} 원",
                     fontWeight = FontWeight.Bold,
                     color = contentColorFor(MaterialTheme.colors.secondary)
                 )
+                Text(text = buildAnnotatedString { })
 
                 Button(
                     colors = ButtonDefaults.buttonColors(
@@ -98,7 +104,6 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
                     Text(text = "채팅하기", fontWeight = FontWeight.Bold)
                 }
             }
-
         }
 
     }) {
