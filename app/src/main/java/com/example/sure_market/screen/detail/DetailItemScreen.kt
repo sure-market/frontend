@@ -1,14 +1,13 @@
 package com.example.sure_market.screen.detail
 
-import android.icu.text.DecimalFormat
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,6 +28,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun DetailItemScreen(viewModel: DetailViewModel) {
@@ -42,11 +42,11 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
     }
 
 
+
 //    val interactionSource = remember { MutableInteractionSource() }
 //    val ripple = rememberRipple(color = Color.Blue)
 
     LaunchedEffect(Unit) {
-//        testImageList.clear()
         Log.d("daeYoung", "데이터 잘 들어있는 확인: ${viewModel.viewRepository.value}")
     }
     Scaffold(bottomBar = {
@@ -111,13 +111,13 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .background(colorResource(id = R.color.main_color))
+                .background(MaterialTheme.colors.background)
                 .padding(it)
 
         ) {
             Box(modifier = Modifier) {
-                HorizontalPager(count = testImageList.size, state = pagerState) { pagerIndex ->
-                    PostCardView(image = testImageList[pagerIndex], pagerState = pagerState)
+                HorizontalPager(count = viewModel.getImageList().size, state = pagerState) { pagerIndex ->
+                    PostCardView(image = viewModel.getImageList()[pagerIndex], pagerState = pagerState)
                 }
                 HorizontalPagerIndicator(
                     modifier = Modifier
@@ -129,12 +129,12 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
 
 
 
-            DetailItemProfile(name = "사용자 닉네임", region = "정왕")
+            DetailItemProfile(name = "사용자 닉네임", region = viewModel.getRegion())
 
             DetailItemContent(
-                title = "제목",
+                title = viewModel.getTitle(),
                 category = "남성패션/잡화",
-                time = "2시간전 ",
+                time = viewModel.calculationTime(),
                 content = "내용\n내용\n내용\n내용"
             )
         }
