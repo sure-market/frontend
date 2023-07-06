@@ -92,7 +92,6 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
                     fontWeight = FontWeight.Bold,
                     color = contentColorFor(MaterialTheme.colors.secondary)
                 )
-                Text(text = buildAnnotatedString { })
 
                 Button(
                     colors = ButtonDefaults.buttonColors(

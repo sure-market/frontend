@@ -77,7 +77,7 @@ class DetailViewModel(private val repository: PostRepository) : ViewModel() {
         return timeInMilliseconds
     }
 
-
+    // 게시글 상세 정보 request API
     fun requestViewRepository(postId: Int) {
         viewModelScope.launch {
             val postData = repository.getLoadDetailData(postId.toLong()).first()
@@ -93,8 +93,8 @@ class DetailViewModel(private val repository: PostRepository) : ViewModel() {
         }
     }
 
+    // 찜 등록 request API
     fun requestPostLike() {
-
         viewModelScope.launch {
             val accessToken = MainApplication.prefs.getUserPref(
                 "userToken",

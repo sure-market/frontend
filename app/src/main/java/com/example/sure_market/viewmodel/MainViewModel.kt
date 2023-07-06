@@ -8,8 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseListData
+import com.example.sure_market.network.MainApplication
 import com.example.sure_market.network.PostRepository
 import com.example.sure_market.screen.main.BottomNavItem
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: PostRepository = PostRepository()): ViewModel() {
@@ -36,6 +38,7 @@ class MainViewModel(private val repository: PostRepository = PostRepository()): 
 //        Log.d("FUCK YOU", it.toString())
 //    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
+    // 게시글 리스트 불러오기 request API
     fun requestViewRepository(accessToken: String) {
         viewModelScope.launch {
             repository.getLoadListData(accessToken = "Bearer $accessToken").collect {
@@ -53,6 +56,25 @@ class MainViewModel(private val repository: PostRepository = PostRepository()): 
                         Log.d("daeYoung", "callPostList Error: ${it.errMsg}")
                     }
                     is ApiState.Loading -> TODO()
+                }
+            }
+        }
+    }
+
+    fun requestPostLike(responseListData: ResponseListData) {
+        viewModelScope.launch {
+            val currentPostId = responseListData.postId
+            val accessToken = MainApplication.prefs.getUserPref(
+                "userToken",
+                ""
+            )
+            when(val response = repository.postLike(accessToken = "Bearer $accessToken", postId = currentPostId).first()) {
+                is ApiState.Success<*> -> {
+                    Log.d("daeYoung", "requestPostLike success")
+                }
+                ApiState.Loading -> TODO()
+                is ApiState.Error -> {
+                    Log.d("daeYoung", "requestPostLike fail ${response.errMsg}")
                 }
             }
         }

@@ -21,7 +21,7 @@ fun GridList(viewModel: MainViewModel, onMoveDetail: (Int) -> Unit) {
         contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
     ) {
         items(viewModel.viewRepository) {
-            GridItemCard(responseListData = it, onMoveDetail = onMoveDetail)
+            GridItemCard(responseListData = it, viewModel = viewModel, onMoveDetail = onMoveDetail)
         }
     }
 }
