@@ -7,6 +7,4 @@ data class ResponseUser(
     val accessToken: String,
     @SerializedName("refreshToken")
     val refreshToken: String,
-    @SerializedName("roles")
-    val roles: List<Roles>,
 )

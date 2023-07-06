@@ -62,7 +62,7 @@ sealed class BottomNavItem(
         screenRoute = SETTING,
         bottomIcon = Icons.Outlined.Person,
         bottomTitle = R.string.bottom_navigation_setting,
-        topIcon = R.drawable.baseline_settings_24,
+        topIcon = R.drawable.outline_settings_24,
         topTitle = R.string.top_setting_title,
     )
 }
