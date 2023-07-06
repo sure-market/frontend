@@ -28,5 +28,11 @@ interface ApiService {
 
     @GET("/api/v1/articles/{postId}")
     suspend fun loadDetailData(@Path("postId") postId: Long): ResponseListData
+
+//    @POST("/api/v1/articles/like")
+//    suspend fun postLike(@Header("Authorization") Authorization: String, @Query("postId") postId: Long)
+
+    @POST("/api/v1/articles/like")
+    suspend fun postLike(@Query("postId") postId: Long)
 }
 

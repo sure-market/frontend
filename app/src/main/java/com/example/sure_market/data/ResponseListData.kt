@@ -21,6 +21,9 @@ data class ResponseListData(
     @SerializedName("userId")
     val userId: String,
 
+    @SerializedName("category")
+    val category: String,
+
     @SerializedName("updatedAt")
     val updatedAt: String,
 

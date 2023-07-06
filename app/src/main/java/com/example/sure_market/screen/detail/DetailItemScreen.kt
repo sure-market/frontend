@@ -43,10 +43,6 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
     }
 
 
-
-//    val interactionSource = remember { MutableInteractionSource() }
-//    val ripple = rememberRipple(color = Color.Blue)
-
     LaunchedEffect(Unit) {
         Log.d("daeYoung", "데이터 잘 들어있는 확인: ${viewModel.viewRepository.value}")
     }
@@ -72,6 +68,7 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
                 },
                 modifier = Modifier.noRippleClickable {
                     isFavorite = !isFavorite
+                    viewModel.requestPostLike()
                 }
             )
 
@@ -136,7 +133,7 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
 
             DetailItemContent(
                 title = viewModel.getTitle(),
-                category = "남성패션/잡화",
+                category = "남성패션/잡화", /* TODO() response에 category 추가할 것 */
                 time = viewModel.calculationTime(),
                 content = "내용\n내용\n내용\n내용"
             )

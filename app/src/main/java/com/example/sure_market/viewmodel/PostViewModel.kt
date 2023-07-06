@@ -47,7 +47,7 @@ class PostViewModel(application: Application, private val postRepository: PostRe
     val place: State<String> = _place
 
     private val _region = mutableStateOf("")
-//    val region: State<String> = _region
+    val region: State<String> = _region
 
     suspend fun requestViewRepository(post: RequestBody) {
         val requestBodyList = emptyList<MultipartBody.Part>().toMutableList()
@@ -100,6 +100,9 @@ class PostViewModel(application: Application, private val postRepository: PostRe
     fun addUri(uri: List<Uri>) {
         uri.forEach { _uriList.add(it) }
         setUriListCount(_uriList.size)
+        uri.forEach {
+            Log.d("daeYoung", "Uri: $it")
+        }
     }
 
     fun deleteUri(uri: Uri) {

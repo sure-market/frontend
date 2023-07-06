@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sure_market.R
 import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseListData
+import com.example.sure_market.network.MainApplication
 import com.example.sure_market.network.PostRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class DetailViewModel(private val repository: PostRepository) : ViewModel() {
     fun getPrice(): String = DecimalFormat("#,###").format(viewRepository.value?.price)
     fun getRegion(): String = viewRepository.value?.region ?: "null"
     fun getTitle(): String = viewRepository.value?.title ?: "null"
+    fun getCategory(): String = viewRepository.value?.category ?: "null"
     private fun getUpdateTime(): String = viewRepository.value?.updatedAt ?: "null"
 
     // 이미지 없을 때 서버에서 그에 맞는 이미지 받아오기
@@ -68,7 +70,6 @@ class DetailViewModel(private val repository: PostRepository) : ViewModel() {
         try {
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             val mDate = sdf.parse(dateTime)
-            Log.d("daeYoung", "중간 단계 시각: ${mDate}")
             timeInMilliseconds = mDate.time
         } catch (e: ParseException) {
             e.printStackTrace()
@@ -86,7 +87,26 @@ class DetailViewModel(private val repository: PostRepository) : ViewModel() {
                 }
                 ApiState.Loading -> TODO()
                 is ApiState.Error -> {
-                    Log.d("daeYoung", "callPostList Error: ${postData.errMsg}")
+                    Log.d("daeYoung", "loadPostList Error: ${postData.errMsg}")
+                }
+            }
+        }
+    }
+
+    fun requestPostLike() {
+
+        viewModelScope.launch {
+            val accessToken = MainApplication.prefs.getUserPref(
+                "userToken",
+                ""
+            )
+            when(val response = repository.postLike(accessToken = "Bearer $accessToken", postId = viewRepository.value?.postId!!).first()) {
+                is ApiState.Success<*> -> {
+                    Log.d("daeYoung", "requestPostLike success")
+                }
+                ApiState.Loading -> TODO()
+                is ApiState.Error -> {
+                    Log.d("daeYoung", "requestPostLike fail ${response.errMsg}")
                 }
             }
         }

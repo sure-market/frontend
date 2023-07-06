@@ -49,4 +49,14 @@ class PostRepository {
         }
     }.flowOn(Dispatchers.IO)
 
+    suspend fun postLike(accessToken: String, postId: Long): Flow<ApiState> = flow {
+        kotlin.runCatching {
+            user.postLike(postId = postId)
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure { error ->
+            error.message?.let { emit(ApiState.Error(it)) }
+        }
+    }
+
 }

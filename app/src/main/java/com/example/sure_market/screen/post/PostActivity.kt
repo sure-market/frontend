@@ -69,20 +69,13 @@ class PostActivity : AppCompatActivity() {
             viewModel.price.value.toLong()
         }
         if (userId != 0L) {
-//            val postData = PostRegisterData(
-//                userId = userId,
-//                title = viewModel.title.value,
-//                price = price,
-//                category = viewModel.category.value,
-//                region = viewModel.region.value,
-//                content = viewModel.content.value
-//            )
             val postData =
                 JSONObject(
                     "{\"userId\":${userId}," +
                             "\"category\":\"${viewModel.category.value}\"," +
                             "\"title\":\"${viewModel.title.value}\"," +
                             "\"content\":\"${viewModel.content.value}\"," +
+                            "\"region\":\"${viewModel.region.value}\"," +
                             "\"price\":${price}}"
                 ).toString()
             val jsonObject = postData.toRequestBody("application/json".toMediaType())
