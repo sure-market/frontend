@@ -15,7 +15,7 @@ class UserSharedPreference(context: Context) {
         prefs.edit().putString("userToken", userToken).apply()
     }
 
-    fun clearUser() {
+    fun logout() {
         prefs.edit().clear().apply()
     }
 }

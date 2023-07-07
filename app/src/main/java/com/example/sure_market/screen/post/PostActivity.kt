@@ -81,9 +81,7 @@ class PostActivity : AppCompatActivity() {
             val jsonObject = postData.toRequestBody("application/json".toMediaType())
 
             lifecycleScope.launch {
-//                val postId = async { viewModel.requestViewRepository(jsonObject) }.await()
                 async { viewModel.requestViewRepository(jsonObject) }.await()
-
                 Log.d("daeYoung", "postId: ${viewModel.viewRepository.value?.postId}")
                 finish()
             }

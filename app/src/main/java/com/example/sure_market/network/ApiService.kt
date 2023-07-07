@@ -27,10 +27,7 @@ interface ApiService {
     suspend fun loadListData(): List<ResponseListData>
 
     @GET("/api/v1/articles/{postId}")
-    suspend fun loadDetailData(@Path("postId") postId: Long): ResponseListData
-
-//    @POST("/api/v1/articles/like")
-//    suspend fun postLike(@Header("Authorization") Authorization: String, @Query("postId") postId: Long)
+    suspend fun loadDetailData(@Path("postId") postId: Long): ResponseDetailPostData
 
     @POST("/api/v1/articles/like")
     suspend fun postLike(@Query("postId") postId: Long)

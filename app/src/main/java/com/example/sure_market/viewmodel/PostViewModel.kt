@@ -50,27 +50,22 @@ class PostViewModel(application: Application, private val postRepository: PostRe
     val region: State<String> = _region
 
     suspend fun requestViewRepository(post: RequestBody) {
-        val requestBodyList = emptyList<MultipartBody.Part>().toMutableList()
+        val requestBodyList = mutableListOf<MultipartBody.Part>()
         _uriList.forEach {
+            Log.d("daeYoung", "Uri: $it")
             val multipartBody = MultipartBody.Part.createFormData(
                 "files",
                 "file name",
                 it.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
             )
+
+            Log.d("daeYoung", "RequestBody: ${it.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())}")
+            Log.d("daeYoung", "MultiPart: $multipartBody")
+
             requestBodyList.add(multipartBody)
         }
         val multipartBodyList = requestBodyList.toList()
 
-//        kotlin.runCatching {
-//            postRepository.getPostRegister(files = multipartBodyList, postDto = post)
-//                .firstOrNull()
-//        }.onSuccess { responsePostId ->
-////            _viewRepository.value = responsePostId ?: ResponsePostId(100)
-//            Log.d("daeYoung", "responsePostId: ${_viewRepository.value}")
-//            Log.d("daeYoung", "responsePostId: ${responsePostId}")
-//        }.onFailure {
-//            Log.d("daeYoung", "PostRegisterFail: fail")
-//        }
         when(val response = postRepository.getPostRegister(files = multipartBodyList, postDto = post).firstOrNull()) {
             is ApiState.Success<*> -> {
                 Log.d("daeYoung", "responsePostId: ${response.value}")

@@ -23,9 +23,10 @@ import com.example.sure_market.R
 fun CarrotPayBox() {
     Column(
         modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth()
             .wrapContentHeight()
-            .clip(MaterialTheme.shapes.medium)
+            .clip(MaterialTheme.shapes.small)
             .border(width = 1.dp, color = MaterialTheme.colors.surface)
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween

@@ -1,11 +1,15 @@
 package com.example.sure_market.viewmodel
 
 import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sure_market.R
 import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseListData
 import com.example.sure_market.network.MainApplication
@@ -82,4 +86,18 @@ class MainViewModel(private val repository: PostRepository = PostRepository()): 
     fun setTopIconState(bottomNavItem: BottomNavItem) {
         _topIconState.value = bottomNavItem
     }
+
+    fun getMyTransactionList() = listOf(
+        "관심목록",
+        "판매내역",
+        "구매내역",
+        "중고거래 가계부"
+    )
+
+    fun getMyTransactionIconList() = listOf(
+        R.drawable.outline_favorite_border_24,
+        R.drawable.outline_feed_24,
+        R.drawable.outline_shopping_bag_24,
+        R.drawable.outline_library_books_24
+    )
 }

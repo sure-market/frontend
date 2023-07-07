@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sure_market.R
 import com.example.sure_market.data.ApiState
+import com.example.sure_market.data.ResponseDetailPostData
 import com.example.sure_market.data.ResponseListData
 import com.example.sure_market.network.MainApplication
 import com.example.sure_market.network.PostRepository
@@ -21,13 +22,14 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.List
 
 class DetailViewModel(private val repository: PostRepository) : ViewModel() {
-    private val _viewRepository = mutableStateOf<ResponseListData?>(null)
-    val viewRepository: State<ResponseListData?> = _viewRepository
+    private val _viewRepository = mutableStateOf<ResponseDetailPostData?>(null)
+    val viewRepository: State<ResponseDetailPostData?> = _viewRepository
 
     fun getPrice(): String = DecimalFormat("#,###").format(viewRepository.value?.price)
     fun getRegion(): String = viewRepository.value?.region ?: "null"
     fun getTitle(): String = viewRepository.value?.title ?: "null"
     fun getCategory(): String = viewRepository.value?.category ?: "null"
+    fun getContent(): String = viewRepository.value?.content ?: "null"
     private fun getUpdateTime(): String = viewRepository.value?.updatedAt ?: "null"
 
     // 이미지 없을 때 서버에서 그에 맞는 이미지 받아오기
@@ -83,7 +85,7 @@ class DetailViewModel(private val repository: PostRepository) : ViewModel() {
             val postData = repository.getLoadDetailData(postId.toLong()).first()
             when (postData) {
                 is ApiState.Success<*> -> {
-                    _viewRepository.value = postData.value as ResponseListData
+                    _viewRepository.value = postData.value as ResponseDetailPostData
                 }
                 ApiState.Loading -> TODO()
                 is ApiState.Error -> {

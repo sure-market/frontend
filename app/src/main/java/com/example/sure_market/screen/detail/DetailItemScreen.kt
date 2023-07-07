@@ -132,9 +132,9 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
 
             DetailItemContent(
                 title = viewModel.getTitle(),
-                category = "남성패션/잡화", /* TODO() response에 category 추가할 것 */
+                category = viewModel.getCategory(),
                 time = viewModel.calculationTime(),
-                content = "내용\n내용\n내용\n내용"
+                content = viewModel.getContent(),
             )
         }
     }

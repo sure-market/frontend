@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     onMovePost = { onMovePost() },
                     onMoveDetail = onMoveDetail,
-                    clearUser = { clearUser() }
+                    logout = { logout() }
                 )
             }
         }
@@ -72,8 +72,8 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
     }
 
-    private fun clearUser() {
-        prefs.clearUser()
+    private fun logout() {
+        prefs.logout()
         finish()
         startActivity(Intent(this, LoginActivity::class.java))
 

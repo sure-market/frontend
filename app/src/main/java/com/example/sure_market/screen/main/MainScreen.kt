@@ -73,7 +73,7 @@ fun MainScreen(
     navController: NavHostController,
     onMovePost: () -> Unit,
     onMoveDetail: (Int) -> Unit,
-    clearUser: () -> Unit
+    logout: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -119,7 +119,7 @@ fun MainScreen(
                 navController = navController,
                 viewModel = viewModel,
                 onMoveDetail = onMoveDetail,
-                clearUser = clearUser
+                logout = logout
             )
         }
     }
@@ -130,7 +130,7 @@ fun NavigationGraph(
     navController: NavHostController,
     viewModel: MainViewModel,
     onMoveDetail: (Int) -> Unit,
-    clearUser: () -> Unit
+    logout: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -146,7 +146,7 @@ fun NavigationGraph(
         }
         composable(BottomNavItem.SettingScreen.screenRoute) {
             viewModel.setTopIconState(BottomNavItem.SettingScreen)
-            SettingScreen(clearUser = clearUser)
+            SettingScreen(viewModel = viewModel, logout = logout)
         }
     }
 }
