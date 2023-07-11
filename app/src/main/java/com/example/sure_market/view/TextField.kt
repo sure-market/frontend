@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Checkbox
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,7 @@ fun TitleTextField(
     BasicTextField(
         value = viewModel.title.value,
         onValueChange = { viewModel.setTitle(it) },
-        textStyle = TextStyle(color = Color.White),
+        textStyle = TextStyle(color = Color.Black),
         modifier = modifier
             .padding(16.dp)
             .fillMaxWidth()
@@ -60,7 +62,7 @@ fun ContentTextField(
     BasicTextField(
         value = viewModel.content.value,
         onValueChange = { viewModel.setContent(it) },
-        textStyle = TextStyle(color = Color.White),
+        textStyle = TextStyle(color = Color.Black),
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
@@ -87,6 +89,10 @@ fun PriceTextField(
     var checkState by rememberSaveable {
         mutableStateOf(false)
     }
+
+    val style = TextStyle(
+        color = if (checkState) MaterialTheme.colors.primary else Color.Black,
+        fontWeight = if (checkState) FontWeight.Bold else FontWeight.Normal)
 
     LaunchedEffect(checkState) {
         when (checkState) {
@@ -116,7 +122,7 @@ fun PriceTextField(
                     }
                 }
             },
-            textStyle = TextStyle(color = Color.White),
+            textStyle = TextStyle(color = Color.Black),
             modifier = Modifier
                 .fillMaxWidth(0.75f)
                 .focusRequester(focusRequesterList[0]),
@@ -137,12 +143,11 @@ fun PriceTextField(
         )
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                ,
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Checkbox(checked = checkState, onCheckedChange = { checkState = it })
-            Text(text = "나눔")
+            Text(text = "나눔", style = style)
         }
 
     }

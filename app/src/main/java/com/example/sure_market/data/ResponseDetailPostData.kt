@@ -3,7 +3,10 @@ package com.example.sure_market.data
 import com.google.gson.annotations.SerializedName
 
 data class ResponseDetailPostData(
-    @SerializedName("user_id")
+    @SerializedName("postId")
+    val postId: Long,
+
+    @SerializedName("userId")
     val userId: Long,
 
     @SerializedName("title")
@@ -16,7 +19,7 @@ data class ResponseDetailPostData(
     val category: String,
 
     @SerializedName("image")
-    val image: String,
+    val image: List<String>,
 
     @SerializedName("region")
     val region: String,
@@ -24,6 +27,6 @@ data class ResponseDetailPostData(
     @SerializedName("content")
     val content: String,
 
-    @SerializedName("status")
-    val status: String,
+    @SerializedName("updatedAt")
+    val updatedAt: String,
 )

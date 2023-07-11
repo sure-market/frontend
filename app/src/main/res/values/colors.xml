@@ -10,6 +10,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FFEB6734</color>
     <color name="main_color">#FF3a3c3d</color>
-    <color name="soft_gray">#FF88898a</color>
+    <color name="soft_gray">#FFF0F0F0</color>
 
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.sure_market.R
@@ -63,7 +64,9 @@ fun LoginScreen(signIn: (String, String) -> Unit, onMoveSignup: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
             value = password,
             onValueChange = { password = it },
             placeholder = { Text(text = stringResource(id = R.string.password)) },
@@ -73,11 +76,11 @@ fun LoginScreen(signIn: (String, String) -> Unit, onMoveSignup: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(modifier = Modifier.fillMaxWidth(), onClick = { signIn(name, password) }) {
-            Text(text = stringResource(id = R.string.login_button))
+            Text(text = stringResource(id = R.string.login_button), fontWeight = FontWeight.Bold)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(modifier = Modifier.fillMaxWidth(), onClick = { onMoveSignup() }) {
-            Text(text = stringResource(id = R.string.signup_button))
+            Text(text = stringResource(id = R.string.signup_button), fontWeight = FontWeight.Bold)
         }
     }
 }

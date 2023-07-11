@@ -1,11 +1,14 @@
 package com.example.sure_market.screen.post
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Instrumentation.ActivityResult
 import android.content.Intent
+import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,19 +27,22 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.sure_market.BuildConfig
 import com.example.sure_market.R
-import com.example.sure_market.screen.main.MainActivity
-import com.example.sure_market.screen.map.MapActivity
 import com.example.sure_market.view.*
 import com.example.sure_market.viewmodel.PostViewModel
 import kotlinx.coroutines.launch
+import java.io.File
 
 
+@SuppressLint("Recycle", "IntentReset")
 @Composable
-fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:() -> Unit, onMoveMapActivity: () -> Unit) {
+fun PostScreen(
+    viewModel: PostViewModel,
+    onMoveMain: () -> Unit,
+    postComplete: () -> Unit,
+    onMoveMapActivity: () -> Unit
+) {
     var dialogState by rememberSaveable {
         mutableStateOf(false)
     }
@@ -49,13 +55,31 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
 
     val context = LocalContext.current
 
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uriList ->
-            viewModel.addUri(uriList)
-            val contentResolver = context.contentResolver
-            Log.d("daeYoung", "방금 가져온 사진의 타입: ${contentResolver.getType(uriList[0])}")
+    val requestGalleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+        val count = activityResult.data?.clipData?.itemCount!!
+        for (i in 0 until count) {
+            val uri = activityResult.data?.clipData?.getItemAt(i)?.uri
+            uri?.let {
+                if(activityResult.resultCode == Activity.RESULT_OK) {
+                    Log.d("daeYoung", "사진 ${it.encodedPath}")
+                    Log.d("daeYoung", "사진 ${it.path}")
+                    viewModel.addUri(uri = uri)
+                    //        it.forEach {
+                    //            Log.d("daeYoung", "endcodePath: ${it.encodedPath}, Uri: $it")
+                    //            Log.d("daeYoung", "endcodeQuery: ${it.encodedQuery}, Path: ${it.path}")
+                    //        }
+                    viewModel.getRealPathFromUri(uri = it, context = context)
+                }
+            }
         }
+    }
 
+    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+        type = "image/*"
+        action = Intent.ACTION_PICK
+        data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+    }
 
 
     if (dialogState) {
@@ -65,13 +89,13 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "중고거래 글쓰기") },
+            TopAppBar(
+                title = { Text(text = "중고거래 글쓰기") },
                 navigationIcon = {
                     IconButton(onClick = { onMoveMain() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_arrow_back_ios_new_24),
                             contentDescription = "back arrow",
-                            tint = Color.White
                         )
                     }
                 },
@@ -79,7 +103,9 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
                     IconButton(onClick = { postComplete() }) {
                         Text(text = "완료", color = colorResource(id = R.color.orange))
                     }
-                }
+                },
+                backgroundColor = MaterialTheme.colors.secondary,
+                contentColor = contentColorFor(MaterialTheme.colors.secondary)
             )
         },
         scaffoldState = scaffoldState
@@ -99,7 +125,9 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
                     .padding(end = 8.dp)
                     .clickable {
                         if (viewModel.uriList.size < 10) {
-                            galleryLauncher.launch("image/*")
+//                            galleryLauncher.launch("image/*")
+                            requestGalleryLauncher.launch(intent)
+//                            requestGalleryLauncher.launch("image/*")
                         } else {
                             scope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar("개수를 초과하였습니다.")
@@ -152,7 +180,10 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
             TitleTextField(viewModel = viewModel, focusRequester = focusRequester[0])
             Divider(thickness = 1.dp)
 
-            CategoryButton(viewModel = viewModel, text = viewModel.category.value) { state -> dialogState = state }
+            CategoryButton(
+                viewModel = viewModel,
+                text = viewModel.category.value
+            ) { state -> dialogState = state }
 
             Divider(thickness = 1.dp)
 
@@ -169,7 +200,10 @@ fun PostScreen(viewModel: PostViewModel, onMoveMain: () -> Unit, postComplete:()
 
             Divider(thickness = 5.dp)
 
-            MapButton(viewModel = viewModel, text = stringResource(id = R.string.post_place)) { onMoveMapActivity() }
+            MapButton(
+                viewModel = viewModel,
+                text = stringResource(id = R.string.post_place)
+            ) { onMoveMapActivity() }
         }
     }
 }

@@ -18,6 +18,7 @@ import com.example.sure_market.viewmodel.PostViewModel
 import com.example.sure_market.viewmodel.PostViewModelFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
@@ -68,28 +69,19 @@ class PostActivity : AppCompatActivity() {
             viewModel.price.value.toLong()
         }
         if (userId != 0L) {
-//            val postData = PostRegisterData(
-//                userId = userId,
-//                title = viewModel.title.value,
-//                price = price,
-//                category = viewModel.category.value,
-//                region = viewModel.region.value,
-//                content = viewModel.content.value
-//            )
             val postData =
                 JSONObject(
                     "{\"userId\":${userId}," +
                             "\"category\":\"${viewModel.category.value}\"," +
                             "\"title\":\"${viewModel.title.value}\"," +
                             "\"content\":\"${viewModel.content.value}\"," +
+                            "\"region\":\"${viewModel.region.value}\"," +
                             "\"price\":${price}}"
                 ).toString()
-            val jsonObject = postData.toRequestBody()
+            val jsonObject = postData.toRequestBody("application/json".toMediaType())
 
             lifecycleScope.launch {
-//                val postId = async { viewModel.requestViewRepository(jsonObject) }.await()
                 async { viewModel.requestViewRepository(jsonObject) }.await()
-
                 Log.d("daeYoung", "postId: ${viewModel.viewRepository.value?.postId}")
                 finish()
             }
