@@ -1,12 +1,11 @@
 package com.example.sure_market.view
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -18,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -47,19 +47,21 @@ fun GridItemCard(
             .padding(10.dp)
             .clickable { onMoveDetail(responseListData.postId.toInt()) },
         shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(width = 1.dp, color = colorResource(id = R.color.main_soft_color)),
         elevation = 10.dp
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Gray)
+//                .background(color = MaterialTheme.colors.surface)
         ) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(105.dp),
-                painter = rememberAsyncImagePainter("https://picsum.photos/500/360"),
-                contentDescription = "dummy data"
+                painter = rememberAsyncImagePainter(responseListData.image[0]),
+                contentScale = ContentScale.Crop,
+                contentDescription = "representative picture"
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(

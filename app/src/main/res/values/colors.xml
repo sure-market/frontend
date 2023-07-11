@@ -11,5 +11,6 @@
     <color name="orange">#FFEB6734</color>
     <color name="main_color">#FF3a3c3d</color>
     <color name="soft_gray">#FFF0F0F0</color>
+    <color name="main_soft_color">#FFffe6e0</color>
 
 </resources>

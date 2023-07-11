@@ -41,11 +41,6 @@ fun DetailItemScreen(modifier: Modifier = Modifier, viewModel: DetailViewModel) 
 //        Log.d("daeYoung", "pagerImage $i")
     }
 
-
-    LaunchedEffect(Unit) {
-        Log.d("daeYoung", "데이터 잘 들어있는 확인: ${viewModel.viewRepository.value}")
-        Log.d("daeYoung", "이미지 리스트 확인: ${viewModel.getImageList()}")
-    }
     Scaffold(bottomBar = {
         BottomAppBar(
             modifier = Modifier
