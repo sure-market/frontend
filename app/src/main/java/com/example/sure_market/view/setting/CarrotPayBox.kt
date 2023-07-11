@@ -75,7 +75,7 @@ fun PayButton(modifier: Modifier = Modifier, icon: Int, text: String) {
             painter = painterResource(id = icon),
             contentDescription = null
         )
-        Text(text = text, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        Text(text = text, fontSize = 14.sp, fontWeight = FontWeight.Bold)
     }
 }
 

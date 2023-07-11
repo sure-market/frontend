@@ -7,7 +7,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sure_market.R
-import com.example.sure_market.screen.detail.DetailItemScreen
 import com.example.sure_market.supports.CategoryList
 import com.example.sure_market.view.CustomButton
 import com.example.sure_market.view.setting.CarrotPayBox
@@ -67,7 +65,7 @@ fun SettingScreen(viewModel: MainViewModel, logout: () -> Unit) {
             CustomButton() {
                 Text(
                     text = "프로필 보기",
-                    fontSize = 11.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -118,6 +116,13 @@ fun SettingScreen(viewModel: MainViewModel, logout: () -> Unit) {
                 }
             }
         }
+
+        Divider(modifier = Modifier.padding(vertical = 8.dp), thickness = 1.dp, color = MaterialTheme.colors.surface)
+
+        SubTitle(
+            title = "나의 동네생활",
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
 
         Button(onClick = { logout() }) {
             Text(text = "로그아웃")

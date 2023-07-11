@@ -1,7 +1,10 @@
 package com.example.sure_market.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -18,7 +21,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class PostViewModel(application: Application, private val postRepository: PostRepository) :
     AndroidViewModel(application), DefaultLifecycleObserver {
@@ -38,6 +43,9 @@ class PostViewModel(application: Application, private val postRepository: PostRe
     private val _uriList = mutableStateListOf<Uri>()
     val uriList: List<Uri> = _uriList
 
+    private val _fileList = mutableStateListOf<File>()
+    val fileList: List<File> = _fileList
+
     private var uriListCount = mutableStateOf(0)
 
     private val _price = mutableStateOf<String>("")
@@ -51,22 +59,24 @@ class PostViewModel(application: Application, private val postRepository: PostRe
 
     suspend fun requestViewRepository(post: RequestBody) {
         val requestBodyList = mutableListOf<MultipartBody.Part>()
-        _uriList.forEach {
-            Log.d("daeYoung", "Uri: $it")
+        fileList.forEach {
             val multipartBody = MultipartBody.Part.createFormData(
-                "files",
-                "file name",
-                it.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())
+                "files",  // 서버에서 지정한 매개변수 이름
+                "${it.name}",  // 실제 DB에 저장되는 이미지의 확장자 이름
+                it.asRequestBody("image/*".toMediaTypeOrNull())
             )
+            RequestBody.create(MultipartBody.FORM, "")
 
-            Log.d("daeYoung", "RequestBody: ${it.toString().toRequestBody("image/jpeg".toMediaTypeOrNull())}")
+            Log.d("daeYoung", "RequestBody: ${it.asRequestBody("image/*".toMediaTypeOrNull())}")
             Log.d("daeYoung", "MultiPart: $multipartBody")
 
             requestBodyList.add(multipartBody)
         }
         val multipartBodyList = requestBodyList.toList()
 
-        when(val response = postRepository.getPostRegister(files = multipartBodyList, postDto = post).firstOrNull()) {
+        when (val response =
+            postRepository.getPostRegister(files = multipartBodyList, postDto = post)
+                .firstOrNull()) {
             is ApiState.Success<*> -> {
                 Log.d("daeYoung", "responsePostId: ${response.value}")
                 _viewRepository.value = response.value as ResponsePostId
@@ -76,6 +86,24 @@ class PostViewModel(application: Application, private val postRepository: PostRe
                 Log.d("daeYoung", "PostRegisterFail: fail: ${response.errMsg}")
             }
             null -> TODO()
+        }
+    }
+
+    fun getRealPathFromUri(uri: Uri, context: Context) {
+        var proj = arrayOf(MediaStore.Images.Media.DATA)
+        var cursor = context.contentResolver.query(uri, proj, null, null, null)
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                Log.d(
+                    "daeYoung",
+                    "데이터 확인: ${cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)}"
+                )
+                val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                Log.d("daeYoung", "데이터 확인: ${cursor.getString(columnIndex)}")
+                val file = File(cursor.getString(columnIndex))
+                Log.d("daeYoung", "file: ${file.name}")
+                _fileList.add(file)
+            }
         }
     }
 
@@ -92,12 +120,9 @@ class PostViewModel(application: Application, private val postRepository: PostRe
         _content.value = content
     }
 
-    fun addUri(uri: List<Uri>) {
-        uri.forEach { _uriList.add(it) }
+    fun addUri(uri: Uri) {
+        _uriList.add(uri)
         setUriListCount(_uriList.size)
-        uri.forEach {
-            Log.d("daeYoung", "Uri: $it")
-        }
     }
 
     fun deleteUri(uri: Uri) {
@@ -126,6 +151,4 @@ class PostViewModel(application: Application, private val postRepository: PostRe
 
 //    private fun String.changeRequestBody(): RequestBody =
 //        this.toRequestBody("text/plain".toMediaTypeOrNull())
-
-
 }

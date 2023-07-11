@@ -29,10 +29,9 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun DetailItemScreen(viewModel: DetailViewModel) {
+fun DetailItemScreen(modifier: Modifier = Modifier, viewModel: DetailViewModel) {
     val scrollState = rememberScrollState()
     var isFavorite by remember { mutableStateOf(false) }
     val pagerState = rememberPagerState()
@@ -45,6 +44,7 @@ fun DetailItemScreen(viewModel: DetailViewModel) {
 
     LaunchedEffect(Unit) {
         Log.d("daeYoung", "데이터 잘 들어있는 확인: ${viewModel.viewRepository.value}")
+        Log.d("daeYoung", "이미지 리스트 확인: ${viewModel.getImageList()}")
     }
     Scaffold(bottomBar = {
         BottomAppBar(
