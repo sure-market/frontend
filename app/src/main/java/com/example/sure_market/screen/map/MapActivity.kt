@@ -32,6 +32,7 @@ import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.sure_market.screen.post.MapScreen
 import com.example.sure_market.screen.post.PostActivity
+import com.example.sure_market.ui.theme.SureMarketTheme
 import com.example.sure_market.viewmodel.MapViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -68,30 +69,33 @@ class MapActivity : AppCompatActivity() {
             ) {
                 granted = true
             }
-            if (granted) {
-                lifecycle.addObserver(viewModel)
-                if (viewModel.location.value != null) {
-                    MapScreen(viewModel = viewModel, onMovePostActivity = onMovePostActivity)
+            SureMarketTheme{
+                if (granted) {
+                    lifecycle.addObserver(viewModel)
+                    if (viewModel.location.value != null) {
+                        MapScreen(viewModel = viewModel, onMovePostActivity = onMovePostActivity)
+                    } else {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator(strokeWidth = 3.dp)
+                        }
+                    }
                 } else {
                     Column(
                         modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
                     ) {
-                        CircularProgressIndicator(strokeWidth = 3.dp)
+                        Text("권한이 허용되지 않았습니다")
+                        Button(onClick = { launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }) {
+                            Text("권한 요청")
+                        }
                     }
                 }
-            } else {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text("권한이 허용되지 않았습니다")
-                    Button(onClick = { launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }) {
-                        Text("권한 요청")
-                    }
-                }
+
             }
         }
     }

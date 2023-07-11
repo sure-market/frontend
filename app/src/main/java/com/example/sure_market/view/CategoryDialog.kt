@@ -1,11 +1,10 @@
 package com.example.sure_market.view
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.sure_market.R
+import com.example.sure_market.supports.CategoryList
 import com.example.sure_market.viewmodel.PostViewModel
 
 @Composable
@@ -25,6 +25,7 @@ fun CategoryDialog(onClick: () -> Unit, viewModel: PostViewModel) {
             modifier = Modifier
                 .width(200.dp)
                 .wrapContentHeight(),
+            shape = MaterialTheme.shapes.small,
             color = Color.White
         ) {
             DialogContent(onClick, viewModel = viewModel)
@@ -34,21 +35,8 @@ fun CategoryDialog(onClick: () -> Unit, viewModel: PostViewModel) {
 
 @Composable
 fun DialogContent(onClick: () -> Unit, viewModel: PostViewModel) {
-    val context = LocalContext.current
-    val list = listOf(
-        stringResource(id = R.string.dialog_digital),
-        stringResource(id = R.string.dialog_home_product),
-        stringResource(id = R.string.dialog_furniture),
-        stringResource(id = R.string.dialog_life_kitchen),
-        stringResource(id = R.string.dialog_child_clothes),
-        stringResource(id = R.string.dialog_child_books),
-        stringResource(id = R.string.dialog_female_clothes),
-        stringResource(id = R.string.dialog_female_stuff),
-        stringResource(id = R.string.dialog_male_clothes),
-        stringResource(id = R.string.dialog_beauty),
-        stringResource(id = R.string.dialog_sport),
-    )
-    LazyColumn() {
+    val list = CategoryList.getCategoryList()
+    LazyColumn(modifier = Modifier.padding(8.dp)) {
         items(list) { item ->
             Button(modifier = Modifier.fillMaxWidth(), onClick = {
                 viewModel.setCategory(item)

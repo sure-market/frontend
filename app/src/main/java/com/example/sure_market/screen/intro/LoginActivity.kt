@@ -70,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
         if (name.isBlank() || password.isBlank() || email.isBlank()) {
             Toast.makeText(this, "빈 항목이 있습니다.", Toast.LENGTH_SHORT).show()
         } else {
-            val user = UserData(name = name, password = password)
             lifecycleScope.launch {
                 val response = async {
                     viewModel.requestSignUpRepository(SignupData(name, password, email))
@@ -89,7 +88,6 @@ class LoginActivity : AppCompatActivity() {
         if (password.isBlank() || name.isBlank()) {
             Toast.makeText(this, "빈 항목이 있습니다.", Toast.LENGTH_SHORT).show()
         } else {
-
             lifecycleScope.launch {
                 val responseUser = async {
                     viewModel.requestLogInRepository(UserData(name = name, password = password))
@@ -97,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 }.await()
                 Log.d("DaeYoung", "로그인 결과 responseUser: $responseUser")
                 responseUser?.let {
-                    prefs.setUserPrefs(userToken = it.token)
+                    prefs.setUserPrefs(userToken = it.accessToken)
                     moveMainScreen()
                 }
             }
