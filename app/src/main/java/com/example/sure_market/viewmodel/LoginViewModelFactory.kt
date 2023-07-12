@@ -2,10 +2,10 @@ package com.example.sure_market.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.sure_market.network.ApiRepository
+import com.example.sure_market.repository.UserRepository
 
-class LoginViewModelFactory(private val repository: ApiRepository): ViewModelProvider.Factory {
+class LoginViewModelFactory(private val repository: UserRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ApiRepository::class.java).newInstance(repository)
+        return modelClass.getConstructor(UserRepository::class.java).newInstance(repository)
     }
 }

@@ -2,19 +2,17 @@ package com.example.sure_market.viewmodel
 
 import android.app.Application
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponsePostId
-import com.example.sure_market.network.PostRepository
+import com.example.sure_market.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -22,7 +20,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 class PostViewModel(application: Application, private val postRepository: PostRepository) :
@@ -65,7 +62,6 @@ class PostViewModel(application: Application, private val postRepository: PostRe
                 "${it.name}",  // 실제 DB에 저장되는 이미지의 확장자 이름
                 it.asRequestBody("image/*".toMediaTypeOrNull())
             )
-            RequestBody.create(MultipartBody.FORM, "")
 
             Log.d("daeYoung", "RequestBody: ${it.asRequestBody("image/*".toMediaTypeOrNull())}")
             Log.d("daeYoung", "MultiPart: $multipartBody")

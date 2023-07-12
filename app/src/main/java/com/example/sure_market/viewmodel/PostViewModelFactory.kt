@@ -3,7 +3,7 @@ package com.example.sure_market.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.sure_market.network.PostRepository
+import com.example.sure_market.repository.PostRepository
 
 class PostViewModelFactory(private val repository: PostRepository, private val application: Application):
     ViewModelProvider.AndroidViewModelFactory(application) {

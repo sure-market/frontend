@@ -20,9 +20,6 @@ interface ApiService {
         @Part("postDto") postDto: RequestBody,
     ): ResponsePostId
 
-//    @GET("/api/v1/articles/")
-//    suspend fun loadListData(@Header("Authorization") Authorization: String): List<ResponseListData>
-
     @GET("/api/v1/articles/")
     suspend fun loadListData(): List<ResponseListData>
 
@@ -31,5 +28,8 @@ interface ApiService {
 
     @POST("/api/v1/articles/like")
     suspend fun postLike(@Query("postId") postId: Long)
+
+    @GET("/api/v1/profile/posts")
+    suspend fun loadMyPostList(): List<ResponseListData>
 }
 

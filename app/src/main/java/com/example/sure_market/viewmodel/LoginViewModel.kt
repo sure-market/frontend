@@ -8,13 +8,10 @@ import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseUser
 import com.example.sure_market.data.SignupData
 import com.example.sure_market.data.UserData
-import com.example.sure_market.network.ApiRepository
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import com.example.sure_market.repository.UserRepository
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 
-class LoginViewModel(private val apiRepository: ApiRepository) : ViewModel() {
+class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     private val _responseLogIn = mutableStateOf<ResponseUser?>(null)
     val responseLogIn: State<ResponseUser?> = _responseLogIn
 
@@ -23,7 +20,7 @@ class LoginViewModel(private val apiRepository: ApiRepository) : ViewModel() {
 
 
     suspend fun requestLogInRepository(user: UserData) {
-        when (val apiState = apiRepository.getPostLogIn(user).first()) {
+        when (val apiState = userRepository.getPostLogIn(user).first()) {
             is ApiState.Success<*> -> {
                 _responseLogIn.value = apiState.value as ResponseUser
             }
@@ -35,7 +32,7 @@ class LoginViewModel(private val apiRepository: ApiRepository) : ViewModel() {
     }
 
     suspend fun requestSignUpRepository(user: SignupData) {
-        when (val apiState = apiRepository.getPostSignUp(user).first()) {
+        when (val apiState = userRepository.getPostSignUp(user).first()) {
             is ApiState.Success<*> -> {
                 _responseSignUp.value = apiState.value as Boolean
             }

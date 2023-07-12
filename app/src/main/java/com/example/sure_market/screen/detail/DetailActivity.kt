@@ -1,6 +1,5 @@
 package com.example.sure_market.screen.detail
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -19,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import com.example.sure_market.network.PostRepository
+import com.example.sure_market.repository.PostRepository
 import com.example.sure_market.ui.theme.SureMarketTheme
 import com.example.sure_market.viewmodel.DetailViewModel
 import com.example.sure_market.viewmodel.MainViewModelFactory

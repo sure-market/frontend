@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.sure_market.data.UserSharedPreference
-import com.example.sure_market.network.PostRepository
+import com.example.sure_market.repository.PostRepository
 import com.example.sure_market.screen.map.MapActivity
 import com.example.sure_market.ui.theme.SureMarketTheme
 import com.example.sure_market.viewmodel.PostViewModel

@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
 }
 
 def Properties properties = new Properties()
@@ -54,6 +56,10 @@ android {
 
 dependencies {
 
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     // retrofit
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -116,4 +122,8 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+}
+
+kapt {
+    correctErrorTypes = true
 }

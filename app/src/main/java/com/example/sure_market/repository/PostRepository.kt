@@ -1,17 +1,13 @@
-package com.example.sure_market.network
+package com.example.sure_market.repository
 
-import android.media.Image
-import android.util.Log
 import com.example.sure_market.data.*
-import com.google.android.gms.common.api.Api
+import com.example.sure_market.network.RetrofitImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 
 
 class PostRepository {
@@ -52,6 +48,16 @@ class PostRepository {
     suspend fun postLike(accessToken: String, postId: Long): Flow<ApiState> = flow {
         kotlin.runCatching {
             user.postLike(postId = postId)
+        }.onSuccess {
+            emit(ApiState.Success(it))
+        }.onFailure { error ->
+            error.message?.let { emit(ApiState.Error(it)) }
+        }
+    }
+
+    suspend fun loadMyPostList(): Flow<ApiState> = flow {
+        kotlin.runCatching {
+            user.loadMyPostList()
         }.onSuccess {
             emit(ApiState.Success(it))
         }.onFailure { error ->

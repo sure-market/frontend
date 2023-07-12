@@ -1,9 +1,6 @@
 package com.example.sure_market.viewmodel
 
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +10,7 @@ import com.example.sure_market.R
 import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseListData
 import com.example.sure_market.network.MainApplication
-import com.example.sure_market.network.PostRepository
+import com.example.sure_market.repository.PostRepository
 import com.example.sure_market.screen.main.BottomNavItem
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

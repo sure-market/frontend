@@ -6,27 +6,21 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.sure_market.data.ResponseUser
 import com.example.sure_market.data.SignupData
 import com.example.sure_market.data.UserData
 import com.example.sure_market.data.UserSharedPreference
-import com.example.sure_market.network.ApiRepository
+import com.example.sure_market.repository.UserRepository
 import com.example.sure_market.screen.main.MainActivity
 import com.example.sure_market.ui.theme.SureMarketTheme
 import com.example.sure_market.viewmodel.LoginViewModel
 import com.example.sure_market.viewmodel.LoginViewModelFactory
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 
 const val LOGIN = "login"
 const val SIGNUP = "signup"
@@ -39,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
     }
     private val viewModelFactory: LoginViewModelFactory by lazy {
-        LoginViewModelFactory(ApiRepository())
+        LoginViewModelFactory(UserRepository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,12 +7,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sure_market.R
 import com.example.sure_market.data.ApiState
 import com.example.sure_market.data.ResponseDetailPostData
-import com.example.sure_market.data.ResponseListData
 import com.example.sure_market.network.MainApplication
-import com.example.sure_market.network.PostRepository
+import com.example.sure_market.repository.PostRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.ParseException

@@ -1,18 +1,15 @@
-package com.example.sure_market.network
+package com.example.sure_market.repository
 
-import android.util.Log
 import com.example.sure_market.data.ApiState
-import com.example.sure_market.data.ResponseUser
 import com.example.sure_market.data.SignupData
 import com.example.sure_market.data.UserData
+import com.example.sure_market.network.RetrofitImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import okhttp3.RequestBody
-import java.util.Calendar
 
-class ApiRepository {
+class UserRepository {
     private val user = RetrofitImpl.getRetrofitService()
 
     suspend fun getPostSignUp(signupData: SignupData): Flow<ApiState> = flow {
